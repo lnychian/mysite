@@ -12,7 +12,7 @@ def acticle_detail(request, article_id):
 
 
 def acticle_list(request):
-    articles = Article.objects.all()
+    articles = Article.objects.filter(is_deleted=False)
     context = {}
     context['articles'] = articles
 
