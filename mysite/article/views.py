@@ -9,3 +9,11 @@ def acticle_detail(request, article_id):
     context['article_obj'] = article
 
     return render(request, '../templates/article_detail.html', context)
+
+
+def acticle_list(request):
+    articles = Article.objects.all()
+    context = {}
+    context['articles'] = articles
+
+    return render(request, '../templates/article_list.html', context)
