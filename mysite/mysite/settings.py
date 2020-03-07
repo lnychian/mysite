@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'article',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blogs',
-        'HOST': '192.168.204.128',
+        'HOST': '192.168.204.132',
         'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'root',

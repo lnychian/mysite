@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>  
+    <p></p>
+    {% for blog in blogs %}
+        <a href="{% url 'blog_detail' blog.pk %}"><h2>{{blog.title}}</h2></a>
+        <p>{{blog.content|truncatechars:30}}...</p>
+        {% empty %}
+        <p>暂无文章，敬请期待</p>
+    {% endfor %}
+    <p>一共有{{ blogs|length }}篇文章</p>
+</body>
+</html>
