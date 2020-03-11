@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Blog, BlogType
@@ -12,8 +13,18 @@ def getBlogCommonList(request, blogs_all_list):
     paginator = Paginator(blogs_all_list, 10)  # 每10篇文章进行一次分页
     page_num = request.GET.get('page', 1)  # 获取url的页面参数(GET请求)
     context['page_of_blogs'] = paginator.get_page(page_num)
-    context['blog_types'] = BlogType.objects.all()
-    context['blog_dates'] = Blog.objects.dates('created_time', 'month', order='ASC')
+    blog_types = BlogType.objects.all()
+    # blog_types_list = []
+    # for blog_type in blog_types:
+    #     blog_type.count = Blog.objects.filter(blog_type=blog_type).count
+    #     blog_types_list.append(blog_type)
+    context['blog_types'] = BlogType.objects.annotate(count=Count('blog'))
+    blog_dates_dic = {}
+    blog_dates = Blog.objects.dates('created_time', 'month', order='ASC')
+    for blog_date in blog_dates:
+        blog_dates_dic[blog_date] = Blog.objects.filter(created_time__year=blog_date.year,
+                                                        created_time__month=blog_date.month).count()
+    context['blog_dates'] = blog_dates_dic
     return context
 
 

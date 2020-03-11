@@ -23,7 +23,7 @@
                                     <span class="glyphicon glyphicon-glyphicon glyphicon-time"></span>
                                     ：{{blog.created_time|date:"Y-n-m H:i:s"}}</a>
                                 </p>
-                                <p>{{blog.content|truncatechars:120}}...</p>
+                                <p>{{blog.content|safe|truncatechars:120}}...</p>
                             </div>
                         {% empty %}
                             <p>暂无文章，敬请期待</p>
@@ -86,7 +86,7 @@
                     <div class="panel-body">
                         <ul class="blog-types">
                             {% for blog_type in blog_types %}
-                                <li><a href="{% url 'blogs_with_type' blog_type.pk %}">{{blog_type}}</a></li>
+                                <li><a href="{% url 'blogs_with_type' blog_type.pk %}">{{blog_type.type_name}}({{blog_type.count}})</a></li>
                             {% empty%}
                             {% endfor %}
                         </ul>
@@ -98,9 +98,9 @@
                     <div class="panel-heading">日期归档</div>
                     <div class="panel-body">
                         <ul class="blog-types">
-                            {% for blog_date in blog_dates %}
+                            {% for blog_date,count in blog_dates.items %}
                                 <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
-                                    <li>{{ blog_date|date:"Y年n月" }}</li>
+                                    <li>{{ blog_date|date:"Y年n月"}}({{count}})</li>
                                 </a>
                             {% endfor %}
                         </ul>
