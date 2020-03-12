@@ -19,9 +19,10 @@
                         <ul class="blog_info_description">
                             <li>作者：{{blog.author}}</li>
                             <li>分类：<a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{blog.blog_type}}</a></li>
-                            <li>发表时间：{{blog.created_time|date:"Y-n-m H:i:s"}}</li>
+                            <li>发表时间：{{blog.created_time|date:"Y-n-d H:i:s"}}</li>
+                            <li>阅读：({{blog.getReadNum}})</li>
                         </ul>
-                        <div class="blog-content">{{blog.content}}</div>
+                        <div class="blog-content">{{blog.content|safe}}</div>
                 <!-- </div>
             </div>
         </div> -->

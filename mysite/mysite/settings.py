@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'article',
     'blog',
     'ckeditor',
     'ckeditor_uploader'
@@ -84,6 +83,14 @@ DATABASES = {
         'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'root',
+    }
+}
+
+# 缓存设置
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
     }
 }
 

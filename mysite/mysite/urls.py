@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .settings import MEDIA_URL, MEDIA_ROOT
+from django.conf.urls.static import static
 from .views import home
 
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
+    path('ckeditor', include('ckeditor_uploader.urls')),
     path('blog/', include('blog.urls')),
 ]
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

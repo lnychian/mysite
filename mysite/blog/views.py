@@ -1,7 +1,8 @@
+from django.core.cache import cache
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Blog, BlogType
+from .models import Blog, BlogType, ReadNum
 
 
 # Create your views here.
@@ -54,11 +55,28 @@ def blogs_with_date(request, year, month):
 
 # 单篇博客页面请求
 def blog_detail(request, blog_pk):
+    blog_cache_name = 'blog_%s_cache' % blog_pk
+    blog_cache = cache.get(blog_cache_name)
     context = {}
-    blog = get_object_or_404(Blog, pk=blog_pk)
-    previous_blog = Blog.objects.filter(created_time__lt=blog.created_time).last()
-    next_blog = Blog.objects.filter(created_time__gt=blog.created_time).first()
-    context['blog'] = blog
-    context['previous_blog'] = previous_blog
-    context['next_blog'] = next_blog
-    return render(request, '../templates/blog_detail.html', context)
+    if blog_cache is None:
+        blog = get_object_or_404(Blog, pk=blog_pk)
+        if not request.COOKIES.get('blog_%s_readnum' % blog_pk):
+            if ReadNum.objects.filter(blog=blog):
+                readnum = ReadNum.objects.get(blog=blog)
+                pass
+            else:
+                readnum = ReadNum(blog=blog)
+            readnum.read_num += 1
+            readnum.save()
+        previous_blog = Blog.objects.filter(created_time__lt=blog.created_time).last()
+        next_blog = Blog.objects.filter(created_time__gt=blog.created_time).first()
+        context['blog'] = blog
+        context['previous_blog'] = previous_blog
+        context['next_blog'] = next_blog
+        cache.set(blog_cache_name, context)
+        print('create cache')
+    else:
+        print('use cache')
+        context = blog_cache
+    response = render(request, '../templates/blog_detail.html', context, 3600)
+    return response

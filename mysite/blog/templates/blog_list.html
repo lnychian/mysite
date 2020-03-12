@@ -21,7 +21,8 @@
                                     <span class="glyphicon glyphicon-glyphicon glyphicon-tags"></span>
                                     ：<a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{blog.blog_type}}</a>
                                     <span class="glyphicon glyphicon-glyphicon glyphicon-time"></span>
-                                    ：{{blog.created_time|date:"Y-n-m H:i:s"}}</a>
+                                    ：{{blog.created_time|date:"Y-n-d H:i:s"}}</a>
+                                    <span>阅读：({{blog.getReadNum}})</span>
                                 </p>
                                 <p>{{blog.content|safe|truncatechars:120}}...</p>
                             </div>
