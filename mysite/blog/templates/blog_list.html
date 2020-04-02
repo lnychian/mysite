@@ -24,7 +24,7 @@
                                     ：{{blog.created_time|date:"Y-n-d H:i:s"}}</a>
                                     <span>阅读：({{blog.getReadNum}})</span>
                                 </p>
-                                <p>{{blog.content|safe|truncatechars:120}}...</p>
+                                <p>{{blog.content|safe|striptags|truncatechars:120}}</p>
                             </div>
                         {% empty %}
                             <p>暂无文章，敬请期待</p>
@@ -34,17 +34,18 @@
                 <div>
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
-                            <li>
-                                {% if page_of_blogs.has_previous %}
+                            {% if page_of_blogs.has_previous %}
+                                <li>
                                     <a href="?page={{ page_of_blogs.previous_page_number }}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
-                                {% else %}
-                                    <a href="" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                {% endif %}
-                            </li>
+                                </li>
+                            {% else %}
+                                <!-- <a href="" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a> -->
+                            {% endif %}
+
                             {% for page_num in page_of_blogs.paginator.page_range %}
                                 {% if page_num == page_of_blogs.number %}
                                     <li class="active"><span href="?page={{page_num}}">{{page_num}}</span></li>
@@ -52,17 +53,21 @@
                                     <li class="disabile"><a href="?page={{page_num}}">{{page_num}}</a></li>
                                 {% endif %}
                             {% endfor %}
-                            <li>
-                                {% if page_of_blogs.has_next %}
+                        
+                            {% if page_of_blogs.has_next %}
+                                <li>
                                     <a href="?page={{ page_of_blogs.next_page_number }}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                {% else %}
-                                    <a href="" aria-label="Next">
+                                </li>
+                            {% else %}
+                                <!-- <li class="disabled">
+                                    <a aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                {% endif %}
-                            </li>
+                                </li> -->
+                            {% endif %}
+                            
                         </ul>
                     </nav>
                     <!-- <nav aria-label="...">
@@ -84,27 +89,31 @@
             <div class="hidden-xs col-sm-4 col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">博客分类</div>
-                    <div class="panel-body">
-                        <ul class="blog-types">
+                    <!-- <div class="panel-body"> -->
+                        <div class="list-group">
                             {% for blog_type in blog_types %}
-                                <li><a href="{% url 'blogs_with_type' blog_type.pk %}">{{blog_type.type_name}}({{blog_type.count}})</a></li>
+                                <li  class="list-group-item">
+                                    <a href="{% url 'blogs_with_type' blog_type.pk %}">{{blog_type.type_name}}</a>
+                                    <span class="badge">{{blog_type.count}}</span>
+                                </li>
                             {% empty%}
                             {% endfor %}
-                        </ul>
-                    </div>
+                        </div>
+                    <!-- </div> -->
                 </div>
             </div>
             <div class="hidden-xs col-sm-4 col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">日期归档</div>
-                    <div class="panel-body">
-                        <ul class="blog-types">
-                            {% for blog_date,count in blog_dates.items %}
-                                <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
-                                    <li>{{ blog_date|date:"Y年n月"}}({{count}})</li>
-                                </a>
-                            {% endfor %}
-                        </ul>
+                    <div class="list-group">
+                        {% for blog_date,count in blog_dates.items %}
+                        <li class="list-group-item">
+                            <span class="badge">{{count}}</span>
+                            <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
+                                {{ blog_date|date:"Y年n月"}}
+                            </a>
+                        </li>
+                        {% endfor %}   
                     </div>
                 </div>
             </div>

@@ -78,5 +78,5 @@ def blog_detail(request, blog_pk):
     else:
         print('use cache')
         context = blog_cache
-    response = render(request, '../templates/blog_detail.html', context, 3600)
+    response = render(request, '../templates/blog_detail.html', context)
     return response

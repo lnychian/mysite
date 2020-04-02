@@ -24,20 +24,29 @@
                         </ul>
                         <div class="blog-content">{{blog.content|safe}}</div>
                 <!-- </div>
-            </div>
-        </div> -->
-        <nav aria-label="...">
-            <ul class="pager">
-                {% if previous_blog %}
-                    <li class="previous"><a href="{% url 'blog_detail' previous_blog.pk %}"><span aria-hidden="true">&larr;</span> {{previous_blog.title}}</a></li>
-                {% else %}
-                {% endif %}
-                {% if next_blog %}
-                    <li class="next"><a href="{% url 'blog_detail' next_blog.pk %}">{{next_blog.title}} <span aria-hidden="true">&rarr;</span></a></li>
-                {% else %}
-                {% endif %}
-            </ul>
-        </nav>
+            </div>-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            {{user}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <nav aria-label="...">
+                <ul class="pager">
+                    {% if previous_blog %}
+                        <li class="previous"><a href="{% url 'blog_detail' previous_blog.pk %}"><span aria-hidden="true">&larr;</span> {{previous_blog.title}}</a></li>
+                    {% else %}
+                    {% endif %}
+                    {% if next_blog %}
+                        <li class="next"><a href="{% url 'blog_detail' next_blog.pk %}">{{next_blog.title}} <span aria-hidden="true">&rarr;</span></a></li>
+                    {% else %}
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 {% endblock%}
